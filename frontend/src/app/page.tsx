@@ -19,11 +19,51 @@ export default function SentioLanding() {
   const [isAnimating, setIsAnimating] = useState(false);
   const textRef = useRef<HTMLDivElement>(null);
 
-  // --- SMOOTHER SCROLL LOGIC ---
+  // --- NEW: Form State ---
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  // --- NEW: Backend Connection Logic ---
+  const handleSignup = async (emailVal: string, passwordVal: string) => {
+    try {
+      console.log("Sending data:", { email: emailVal, password: passwordVal });
+      
+      const res = await fetch("http://localhost:8000/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: emailVal, password: passwordVal }),
+      });
+
+      const data = await res.json();
+      console.log("Response from backend:", data);
+      
+      // Optional: Close modal on success
+      if (res.ok) {
+        setModalOpen(false);
+        // Reset form
+        setEmail("");
+        setPassword("");
+        setFullName("");
+      }
+    } catch (error) {
+      console.error("Error signing up:", error);
+    }
+  };
+
+  //Wrapper to handle button click
+  const handleAuthAction = () => {
+    if (authMode === "signup") {
+      handleSignup(email, password);
+    } else {
+      console.log("Sign In logic would go here...");
+    }
+  };
+
+  // --- SCROLL Animation ---
   const handleScroll = useCallback((event: WheelEvent) => {
     if (modalOpen || isAnimating) return; 
 
-    // Longer debounce (1000ms) matches the slower animation for smoothness
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 1200);
 
@@ -39,20 +79,19 @@ export default function SentioLanding() {
     return () => window.removeEventListener("wheel", handleScroll);
   }, [handleScroll]);
 
-  // --- AUTO SLIDESHOW ---
+  // --- SLIDESHOW ---
   useEffect(() => {
     const interval = setInterval(() => {
       if (!modalOpen) {
         setIndex((prev) => (prev + 1) % images.length);
       }
-    }, 7000); // 7 seconds for a relaxed pace
+    }, 7000); 
     return () => clearInterval(interval);
   }, [modalOpen]);
 
-  // --- TEXT RE-ANIMATION ---
+  // --- TEXT ANIMATION ---
   useEffect(() => {
     if (textRef.current) {
-      // Trigger a reflow to restart the CSS animation
       textRef.current.style.animation = "none";
       void textRef.current.offsetHeight; 
       textRef.current.style.animation = "";
@@ -67,7 +106,6 @@ export default function SentioLanding() {
         {images.map((img, i) => (
           <div
             key={img}
-            // Increased duration to 1500ms for that "silk" feel
             className={`absolute inset-0 transition-opacity duration-1500 ease-in-out ${
               i === index ? "opacity-100" : "opacity-0"
             }`}
@@ -109,7 +147,7 @@ export default function SentioLanding() {
         </footer>
       </div>
 
-      {/* --- AUTH MODAL --- */}
+      {/* --- MODAL --- */}
       {modalOpen && (
         <div 
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md animate-fade-in"
@@ -166,6 +204,8 @@ export default function SentioLanding() {
                   <input 
                     type="text" 
                     placeholder="Full Name"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
                     className="w-full border-b border-gray-300 py-2 focus:outline-none focus:border-black transition-colors bg-transparent placeholder-gray-400"
                   />
                 </div>
@@ -174,15 +214,18 @@ export default function SentioLanding() {
                 <input 
                   type="email" 
                   placeholder="Email Address"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="w-full border-b border-gray-300 py-2 focus:outline-none focus:border-black transition-colors bg-transparent placeholder-gray-400"
                 />
               </div>
               
-              {/* PASSWORD FIELD WITH NODE ICON */}
               <div className="group relative">
                 <input 
                   type={showPassword ? "text" : "password"}
                   placeholder="Password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full border-b border-gray-300 py-2 pr-10 focus:outline-none focus:border-black transition-colors bg-transparent placeholder-gray-400"
                 />
                 <button 
@@ -190,7 +233,6 @@ export default function SentioLanding() {
                   className="absolute right-0 top-2 text-gray-400 hover:text-black transition-colors focus:outline-none"
                   type="button"
                 >
-                  {/* Custom 'Hollow Circle' Node Icon */}
                   <svg 
                     width="20" 
                     height="20" 
@@ -205,7 +247,11 @@ export default function SentioLanding() {
                 </button>
               </div>
 
-              <button className="w-full bg-black text-white py-4 mt-8 uppercase tracking-widest text-xs hover:bg-gray-900 transition-colors cursor-pointer duration-300">
+              {/* --- ACTION BUTTON --- */}
+              <button 
+                onClick={handleAuthAction}
+                className="w-full bg-black text-white py-4 mt-8 uppercase tracking-widest text-xs hover:bg-gray-900 transition-colors cursor-pointer duration-300"
+              >
                 {authMode === "signup" ? "Begin" : "Enter"}
               </button>
             </div>
