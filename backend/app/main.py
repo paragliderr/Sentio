@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
+from app.api import projects
 
 app = FastAPI()
+
+app.include_router(projects.router, prefix="/projects")
+
 from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
