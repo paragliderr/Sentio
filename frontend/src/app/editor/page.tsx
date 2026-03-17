@@ -1,6 +1,6 @@
 "use client";
-import Topbar from "@/components/Topbar";
-import Sidebar from "@/components/Sidebar";
+import Topbar from "@/components/dashboard/Topbar";
+import Sidebar from "@/components/dashboard/Sidebar";
 
 export default function EditorPage() {
   return (

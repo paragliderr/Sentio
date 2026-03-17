@@ -24,7 +24,6 @@ export default function HomePage() {
 
     lenisRef.current = lenis;
 
-    // Sync ScrollTrigger with Lenis scroll position
     ScrollTrigger.scrollerProxy(document.body, {
       scrollTop(value) {
         if (typeof value === "number") {
@@ -55,8 +54,13 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen w-full bg-[#0a0a0a] text-[#f0f0f0]">
-      <HeroSlideshow />
+      {/* HERO SECTION */}
+      <div className="relative">
+        <HeroSlideshow />
+        {/* Get Started button REMOVED — Begin the Journey handles this */}
+      </div>
 
+      {/* SCROLL CONTENT */}
       <div className="relative">
         {scrollytellingData.map((item, index) => (
           <ScrollytellingSection key={item.id} item={item} index={index} />
