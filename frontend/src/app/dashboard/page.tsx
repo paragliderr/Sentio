@@ -1,17 +1,19 @@
-'use client'
-import { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
-import { getSupabaseClient } from '@/lib/supabaseClient'
+"use client";
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { getSupabaseClient } from "@/lib/supabaseClient";
 
 export default function DashboardPage() {
-  const router = useRouter()
-  
-  useEffect(() => {
-    const supabase = getSupabaseClient()
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) router.push('/auth') // redirect if not logged in
-    })
-  }, [])
+  const router = useRouter();
 
-  return <div>Your Dashboard</div>
+  useEffect(() => {
+    const supabase = getSupabaseClient();
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (!session) router.push("/auth");
+      else router.push("/dashboard/explore");
+    });
+  }, [router]);
+
+  return null;
 }

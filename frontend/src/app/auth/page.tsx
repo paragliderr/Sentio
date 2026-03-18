@@ -21,7 +21,7 @@ export default function AuthPage() {
   const handleLogin = async () => {
     try {
       await signIn(email, password);
-      router.push("/dashboard"); // 🔥 important
+      router.push("/dashboard/explore"); // 🔥 important
     } catch (err: any) {
       alert(err.message);
     }

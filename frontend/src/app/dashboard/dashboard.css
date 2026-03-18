@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+.dashboard-root {
+  --tw-color-primary: hsl(263 70% 76%);
+  --tw-color-primary-foreground: hsl(240 6% 4%);
+  --tw-color-secondary: hsl(240 4% 16%);
+  --tw-color-muted: hsl(240 4% 16%);
+  --tw-color-muted-foreground: hsl(240, 5%, 62%);
+  --tw-color-card: hsl(240 6% 10%);
+  --tw-color-border: hsl(240 4% 16%);
+  --tw-color-accent: hsl(160 68% 40%);
+  background-color: hsl(240 6% 4%);
+  color: hsl(0 0% 98%);
+  min-height: 100vh;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Override Tailwind utility classes for dashboard */
+.dashboard-root .bg-primary { background-color: hsl(263 70% 76%) !important; }
+.dashboard-root .text-primary { color: hsl(263 70% 76%) !important; }
+.dashboard-root .text-primary-foreground { color: hsl(240 6% 4%) !important; }
+.dashboard-root .bg-card { background-color: hsl(240 6% 10%) !important; }
+.dashboard-root .bg-secondary { background-color: hsl(240 4% 16%) !important; }
+.dashboard-root .text-muted-foreground { color: hsl(240, 23%, 94%) !important; }
+.dashboard-root .border-border { border-color: hsl(240 4% 16%) !important; }
+.dashboard-root .bg-primary\/60 { background-color: hsl(263 70% 76% / 0.6) !important; }
+.dashboard-root .hover\:bg-secondary:hover { background-color: hsl(240 4% 16%) !important; }
+.dashboard-root .ring-primary\/30 { --tw-ring-color: hsl(263 70% 76% / 0.3) !important; }
+.dashboard-root .text-muted-foreground\/60 { color: hsla(240, 4%, 51%, 0.6) !important; }
